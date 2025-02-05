@@ -1,0 +1,28 @@
+{
+    "name": "nodejs",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@fyresite/aws-lambda-proxy-response": "^0.1.1",
+        "abi-decoder": "^2.4.0",
+        "axios": "^0.21.1",
+        "dayjs": "^1.11.0",
+        "mysql2": "^2.1.0",
+        "handlebars": "^4.7.7",
+        "nodemailer": "^6.8.0",
+        "sequelize": "^6.19.0",
+        "stripe": "^10.14.0",
+        "phone": "^3.1.29",
+        "twilio": "^4.19.0",
+        "ulid": "^2.3.0",
+        "xhr2": "^0.2.0",
+        "yargs": "^15.4.1"
+    }
+}

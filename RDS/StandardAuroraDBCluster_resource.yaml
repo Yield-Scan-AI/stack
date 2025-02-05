@@ -1,0 +1,64 @@
+StandardAuroraDBCluster:
+    DependsOn: StandardAuroraDBClusterSecret
+    Type: AWS::RDS::DBCluster
+    Properties:
+        Engine: aurora-mysql
+        EngineMode: global
+        EngineVersion: '8.0.mysql_aurora.3.04.0'
+        DatabaseName: !Ref DatabaseName
+        StorageEncrypted: true
+        MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref StandardAuroraDBClusterSecret, '::username}}']]
+        MasterUserPassword:
+            !Join ['', ['{{resolve:secretsmanager:', !Ref StandardAuroraDBClusterSecret, '::password}}']]
+        DBSubnetGroupName: !Ref AuroraDBClusterSubnetGroup
+        DBClusterParameterGroupName: !Ref StandardAuroraDBClusterParameterGroup
+        VpcSecurityGroupIds:
+            - !GetAtt AuroraDBClusterSecurityGroup.GroupId
+
+StandardAuroraDBClusterParameterGroup:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+        Description: 'CloudFormation Sample Aurora Cluster Parameter Group'
+        Family: aurora-mysql8.0
+        Parameters:
+            transaction_isolation: READ-COMMITTED
+            max_connections: !Ref MaxDbConnections
+
+StandardAuroraDBParameterGroup:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+        Description: 'CloudFormation Sample Aurora Cluster Parameter Group'
+        Family: aurora-mysql8.0
+        Parameters:
+            transaction_isolation: READ-COMMITTED
+            max_connections: !Ref MaxDbConnections
+
+StandardAuroraDBClusterSecret:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+        Name: !Sub RDS-Standard-${Environment}
+        GenerateSecretString:
+            SecretStringTemplate: '{"username": "stack"}'
+            GenerateStringKey: 'password'
+            PasswordLength: 30
+            ExcludeCharacters: '"@/\'
+
+StandardAuroraDBClusterSecretAttachment:
+    Type: 'AWS::SecretsManager::SecretTargetAttachment'
+    Properties:
+        SecretId: !Ref StandardAuroraDBClusterSecret
+        TargetType: AWS::RDS::DBCluster
+        TargetId: !Ref StandardAuroraDBCluster
+
+StandardAuroraDBInstance1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+        AvailabilityZone: !GetAtt Subnet1.AvailabilityZone
+        DBClusterIdentifier: !Ref StandardAuroraDBCluster
+        DBInstanceClass: !Ref DBInstanceSize
+        DBParameterGroupName: !Ref StandardAuroraDBParameterGroup
+        DBSubnetGroupName: !Ref AuroraDBClusterSubnetGroup
+        Engine: aurora-mysql
+        PubliclyAccessible: true
+        EngineVersion: '8.0.mysql_aurora.3.04.0'
+        EnablePerformanceInsights: !Ref EnablePerformanceInsights

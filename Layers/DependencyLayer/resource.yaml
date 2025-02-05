@@ -1,0 +1,7 @@
+DependencyLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+        ContentUri: ./Layers/DependencyLayer
+        RetentionPolicy: Delete
+        CompatibleRuntimes:
+            - nodejs18.x

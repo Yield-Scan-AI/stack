@@ -1,0 +1,18 @@
+{
+    "Parameters": {
+        "Environment": "Production",
+        "DatabaseName": "StackProduction",
+        "MaxDbConnections": "2000",
+        "VPCName": "StackProduction"
+    },
+    "StackPolicy": {
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": ["Update:*"],
+                "Principal": "*",
+                "Resource": "*"
+            }
+        ]
+    }
+}

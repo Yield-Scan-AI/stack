@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e;
+
+mkdir /tmp/code;
+mv -v Layers/SharedLayer/nodejs/* /tmp/code/;
+mkdir -p Layers/SharedLayer/nodejs/node_modules;
+mv -v /tmp/code/* Layers/SharedLayer/nodejs/node_modules/;
+
+find . -name package.json -not -path "*/node_modules/*" -exec bash -c "npm --prefix \$(dirname {}) ci --only production --no-audit" \;

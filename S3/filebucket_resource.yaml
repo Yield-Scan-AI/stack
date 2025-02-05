@@ -1,0 +1,38 @@
+FilesS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+        PublicAccessBlockConfiguration:
+            BlockPublicPolicy: false
+            RestrictPublicBuckets: false
+        CorsConfiguration:
+            CorsRules:
+                - AllowedOrigins:
+                      - '*'
+                  AllowedMethods:
+                      - GET
+                      - HEAD
+                      - PUT
+                      - POST
+                      - DELETE
+                  AllowedHeaders:
+                      - '*'
+                  ExposedHeaders:
+                      - x-amz-server-side-encryption
+                      - x-amz-id-2
+                      - x-amz-request-id
+                      - ETag
+                  MaxAge: 3000
+
+FilesS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+        Bucket: !Ref FilesS3Bucket
+        PolicyDocument:
+            Statement:
+                - Effect: Allow
+                  Principal: '*'
+                  Action:
+                      - s3:GetObject
+                  Resource:
+                      - !Sub 'arn:aws:s3:::${FilesS3Bucket}/profile/*'
+                      - !Sub 'arn:aws:s3:::${FilesS3Bucket}/public/*'

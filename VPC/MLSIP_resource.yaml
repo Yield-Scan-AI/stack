@@ -1,0 +1,87 @@
+REVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+        CidrBlock: '10.100.0.0/16'
+        Tags:
+            - Key: Name
+              Value: ARMLSLambdaVPC
+
+REPublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+        CidrBlock: '10.100.0.0/24'
+        MapPublicIpOnLaunch: true
+        VpcId: !Ref REVPC
+        AvailabilityZone:
+            Fn::Select:
+                - 0
+                - Fn::GetAZs: !Ref 'AWS::Region'
+
+REPrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+        CidrBlock: '10.100.1.0/24'
+        MapPublicIpOnLaunch: false
+        VpcId: !Ref REVPC
+        AvailabilityZone:
+            Fn::Select:
+                - 0
+                - Fn::GetAZs: !Ref 'AWS::Region'
+
+REInternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+REVPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+        InternetGatewayId: !Ref REInternetGateway
+        VpcId: !Ref REVPC
+
+REPrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+        VpcId: !Ref REVPC
+
+REPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+        VpcId: !Ref REVPC
+
+REPrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref REPrivateRouteTable
+        SubnetId: !Ref REPrivateSubnet1
+
+REPublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref REPublicRouteTable
+        SubnetId: !Ref REPublicSubnet1
+
+RENATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+        AllocationId: !GetAtt REElasticIP.AllocationId
+        SubnetId: !Ref REPublicSubnet1
+
+REElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+        Domain: vpc
+
+REPrivateRoute:
+    Type: AWS::EC2::Route
+    DependsOn: RENATGateway
+    Properties:
+        RouteTableId: !Ref REPrivateRouteTable
+        DestinationCidrBlock: '0.0.0.0/0'
+        NatGatewayId: !Ref RENATGateway
+
+REPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: REInternetGateway
+    Properties:
+        RouteTableId: !Ref REPublicRouteTable
+        DestinationCidrBlock: '0.0.0.0/0'
+        GatewayId: !Ref REInternetGateway

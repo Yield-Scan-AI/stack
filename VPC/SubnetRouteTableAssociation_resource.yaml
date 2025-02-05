@@ -1,0 +1,35 @@
+Subnet1RouteTableAssociation:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref Subnet1
+
+Subnet2RouteTableAssociation:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref Subnet2
+      
+Subnet3RouteTableAssociation:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref Subnet3
+      
+PrivateSubnet1RouteTableAssociation:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnet1
+      
+PrivateSubnet2RouteTableAssociation:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnet2
+      
+PrivateSubnet3RouteTableAssociation:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnet3

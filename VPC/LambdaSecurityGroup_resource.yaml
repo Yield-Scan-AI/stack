@@ -1,0 +1,18 @@
+LambdaSecurityGroup:
+  Type: AWS::EC2::SecurityGroup
+  Properties: 
+    VpcId: !Ref VPC
+    GroupDescription: LambdaSecurityGroup
+    SecurityGroupIngress:
+      - CidrIp: '10.0.3.0/24'
+        FromPort: 3306
+        IpProtocol: tcp
+        ToPort: 3306
+      - CidrIp: '10.0.4.0/24'
+        FromPort: 3306
+        IpProtocol: tcp
+        ToPort: 3306
+      - CidrIp: '10.0.5.0/24'
+        FromPort: 3306
+        IpProtocol: tcp
+        ToPort: 3306

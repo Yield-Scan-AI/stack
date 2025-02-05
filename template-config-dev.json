@@ -1,0 +1,18 @@
+{
+    "Parameters": {
+        "Environment": "Development",
+        "DatabaseName": "StackDevelopment",
+        "MaxDbConnections": "2000",
+        "VPCName": "StackDevelopment"
+    },
+    "StackPolicy": {
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": ["Update:*"],
+                "Principal": "*",
+                "Resource": "*"
+            }
+        ]
+    }
+}

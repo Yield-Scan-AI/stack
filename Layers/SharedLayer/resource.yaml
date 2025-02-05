@@ -1,0 +1,7 @@
+SharedLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+        ContentUri: ./Layers/SharedLayer
+        RetentionPolicy: Delete
+        CompatibleRuntimes:
+            - nodejs18.x

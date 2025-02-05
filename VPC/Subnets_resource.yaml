@@ -1,0 +1,64 @@
+Subnet1:
+  Type: AWS::EC2::Subnet
+  Properties:
+    CidrBlock: '10.100.0.0/24'
+    MapPublicIpOnLaunch: true
+    VpcId: !Ref VPC
+    AvailabilityZone: 
+      Fn::Select: 
+        - 0
+        - Fn::GetAZs: !Ref "AWS::Region"
+    
+Subnet2:
+  Type: AWS::EC2::Subnet
+  Properties:
+    CidrBlock: '10.100.1.0/24'
+    MapPublicIpOnLaunch: true
+    VpcId: !Ref VPC
+    AvailabilityZone: 
+      Fn::Select: 
+        - 1
+        - Fn::GetAZs: !Ref "AWS::Region"
+    
+Subnet3:
+  Type: AWS::EC2::Subnet
+  Properties:
+    CidrBlock: '10.100.2.0/24'
+    MapPublicIpOnLaunch: true
+    VpcId: !Ref VPC
+    AvailabilityZone: 
+      Fn::Select: 
+        - 2
+        - Fn::GetAZs: !Ref "AWS::Region"
+        
+PrivateSubnet1:
+  Type: AWS::EC2::Subnet
+  Properties:
+    CidrBlock: '10.100.3.0/24'
+    MapPublicIpOnLaunch: false
+    VpcId: !Ref VPC
+    AvailabilityZone: 
+      Fn::Select: 
+        - 0
+        - Fn::GetAZs: !Ref "AWS::Region"
+        
+PrivateSubnet2:
+  Type: AWS::EC2::Subnet
+  Properties:
+    CidrBlock: '10.100.4.0/24'
+    MapPublicIpOnLaunch: false
+    VpcId: !Ref VPC
+    AvailabilityZone: 
+      Fn::Select: 
+        - 1
+        - Fn::GetAZs: !Ref "AWS::Region"
+PrivateSubnet3:
+  Type: AWS::EC2::Subnet
+  Properties:
+    CidrBlock: '10.100.5.0/24'
+    MapPublicIpOnLaunch: false
+    VpcId: !Ref VPC
+    AvailabilityZone: 
+      Fn::Select: 
+        - 2
+        - Fn::GetAZs: !Ref "AWS::Region"

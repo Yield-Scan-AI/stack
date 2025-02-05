@@ -1,0 +1,25 @@
+APILoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+        Name: !Sub StackApiLoadBalancer-${Environment}
+        Type: network
+        Scheme: internet-facing
+        Subnets:
+            - !Ref Subnet1
+            - !Ref Subnet2
+            - !Ref Subnet3
+
+APITargetGroup1:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+        Name: !Sub StackApiTargetGroup-${Environment}
+        HealthCheckIntervalSeconds: 10
+        HealthCheckPath: /
+        HealthCheckProtocol: HTTP
+        HealthCheckPort: 3000
+        HealthyThresholdCount: 2
+        Port: 3000
+        Protocol: TCP
+        TargetType: instance
+        UnhealthyThresholdCount: 2
+        VpcId: !Ref VPC

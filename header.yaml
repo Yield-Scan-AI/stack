@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Globals:
+    Function:
+        Environment:
+            Variables:
+                Environment: !Ref Environment
+
+Parameters:
+    Environment:
+        Type: String
+        Default: Development
+    GatewayCert:
+        Type: String
+        Default: NONE
+    GatewayEndpoint:
+        Type: String
+        Default: NONE
+
+    # DB Instance
+    DBInstanceSize:
+        Type: String
+        AllowedValues:
+            - db.r5.large
+            - db.t3.medium
+        Default: 'db.t3.medium'
+    EnablePerformanceInsights:
+        Type: String
+        AllowedValues:
+            - 'true'
+            - 'false'
+        Default: 'false'
+    MaxDbConnections:
+        Type: String
+
+    # Names
+    DatabaseName:
+        Type: String
+    DatabaseUser:
+        Type: String
+        Default: 'stack'
+    VPCName:
+        Type: String
+
+Conditions:
+    IsProd: !Equals [!Ref Environment, Production]
+    IsDev: !Equals [!Ref Environment, Development]
